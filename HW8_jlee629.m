@@ -1,5 +1,7 @@
 function HW8_jlee629()
 
+
+%% part 1 Fourier Domain filtering
 X = imread('Paris','jpg');
 X = rgb2gray(X);
 figure
@@ -61,3 +63,77 @@ subplot(1,3,2)
 imagesc(X2)
 subplot(1,3,3)
 imagesc(X3)
+
+
+
+%% part 2 Real and Imaginary parts of the DFT. 
+
+
+X1 = imread('foret','jpg');
+X2 = imread('Nice','jpg');
+X1 = rgb2gray(X1);
+X2 = rgb2gray(X2);
+
+
+Y1 = fft2(X1);
+Y2 = fft2(X2);
+
+Z.Y1real = real(Y1);
+Z.Y1imag = imag(Y1);
+Z.Y2real = real(Y2);
+Z.Y2imag = imag(Y2);
+
+
+Y1 = log(abs(fftshift(Y1))+1);
+Y2 = log(abs(fftshift(Y2))+1);
+
+Mod1 = complex(Z.Y1real, Z.Y2imag);
+Mod2 = complex(Z.Y2real, Z.Y1imag);
+XMod1 = abs(ifft2(Mod1));
+XMod2 = abs(ifft2(Mod2));
+fourier1 = log(abs(fftshift(Mod1))+1);
+fourier2 = log(abs(fftshift(Mod2))+1);
+
+figure
+subplot(2,2,1)
+imshow(abs(mat2gray(log(abs(fftshift(Z.Y1real))+1))))
+subplot(2,2,2)
+imshow(abs(mat2gray(log(abs(fftshift(Z.Y1imag))+1))))
+subplot(2,2,3)
+imshow(abs(mat2gray(log(abs(fftshift(Z.Y2real))+1))))
+subplot(2,2,4)
+imshow(abs(mat2gray(log(abs(fftshift(Z.Y1imag))+1))))
+
+
+figure
+colormap('gray')
+subplot(2,2,1)
+imagesc(X1)
+subplot(2,2,2)
+imagesc(X2)
+subplot(2,2,3)
+imagesc(XMod1)
+subplot(2,2,4)
+imagesc(XMod2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
