@@ -1,35 +1,38 @@
 function hw5_jlee629()
 
 
-%generate dataset 
+%Initializing parameters and dataset 
+
 X = rand(2500,1)*10;
-X = [ones(2500,1) X X.*X];
+X = [ones(2500,1) X X.*X].';
+W = [0.2 0.5 0.1].';
 
-w = [0.2 0.5 0.1];
-
-y = X*w.';
-noise = randn(2500,1);
-
-% we observe y(i) + noise(i) for i = 1:2500
-
+Y = W.'*X;
+noise = randn(1,2500);
+sigmaML = zeros(1,length(5:500));
+nn = 1 ;
 
 
-meansigmaML = [];
-for N = 5:1000
-    if mod(N,100)==0
-    disp(N)
+
+%  running simulation to calculate the sigma to obtain the maximum
+%  likelyhood
+for N = 5:500 % N is the number of sampling points
+    if mod(N,50)==0
+        disp(N)
     end
-    sigmaML = [];
-    for i = 1:100 % trial repetitions
-        indx = randsample([1:2500],N);
-        
-        sigmaML = [sigmaML mean(noise(indx).^2)];
+    for i = 1:100 % for each N, a 100 iterations
+    indx = randsample([1:2500],N);
+    sigmaML(nn) = sigmaML(nn)+mean(noise(indx).^2);
     end
-    
-    meansigmaML  = [meansigmaML mean(sigmaML)];
+    sigmaML(nn) = sigmaML(nn)/100;
+    nn = nn+1;
 end
 
 
-figure
 
-plot(meansigmaML)
+
+figure
+title('\sigma^2_{ML} depending on the number of sampling points') 
+ylabel('\sigma^2_{ML}')
+xlabel('The number of sampling points N')
+plot(sigmaML)
