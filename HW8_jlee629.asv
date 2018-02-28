@@ -95,35 +95,32 @@ fourier2 = log(abs(fftshift(Mod2))+1);
 figure
 subplot(2,2,1)
 imshow(abs(mat2gray(log(abs(Z.Y1mag+1)))))
-title('Magnitude(Forest)')
+title('Magnitude(')
 subplot(2,2,2)
 imshow(abs(mat2gray(log(abs(Z.Y2mag+1)))))
-title('Magnitude(Room)')
+title('')
 subplot(2,2,3)
 imshow(abs(mat2gray(log(abs(Z.Y1phase+1)))))
-title('Phase(Forest)')
+title('')
 subplot(2,2,4)
 imshow(abs(mat2gray(log(abs(Z.Y2phase+1)))))
-title('Phase(Room)')
+title('')
 
 
 figure
 colormap('gray')
 subplot(2,2,1)
-
-imagesc(X1)
-title('Forest')
-subplot(2,2,2)
-
-imagesc(X2)
 title('Room')
+imagesc(X1)
+subplot(2,2,2)
+title('Forest')
+imagesc(X2)
 subplot(2,2,3)
-
+title('Magnitude(Room)+Phase(Forest)')
 imagesc(XMod1)
-title('Magnitude(Forest)+Phase(Room)')
 subplot(2,2,4)
 imagesc(XMod2)
-title('Magnitude(Room)+Phase(Forest)')
+title('Magnitude(Forest)+Phase(Room)')
 
 
 
