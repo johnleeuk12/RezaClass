@@ -4,9 +4,23 @@ function HW8_jlee629()
 %% part 1 Fourier Domain filtering
 X = imread('Nice','jpg');
 X = rgb2gray(X);
+<<<<<<< HEAD
 Y = fft2(X);
 %FFT of the initial image
 Z1 = fftshift(Y);
+=======
+figure
+imagesc(X)
+colormap('gray');
+
+% Y = fft2(X);
+% Z1 = fftshift(Y);
+% X1 = ifft2(Y);
+% figure
+% colormap('gray');
+% imagesc(X1);
+
+>>>>>>> 434fae1769eb63cb98a6efbe93ecbaced55e496b
 Z1 = abs(Z1);
 Z1 = log(Z1+1);
 Z1 = mat2gray(Z1);
@@ -42,6 +56,7 @@ Z3 = mat2gray(Z3);
 Z3 = abs(Z3);
 
 
+<<<<<<< HEAD
 % Bandpass filter
 
 Bandpass = [0.4 0.5];
@@ -82,10 +97,33 @@ X4 = mat2gray(X4);
 Z4 = log(abs(Z4)+1);
 Z4 = abs(Z4);
 Z4 = mat2gray(Z4);
+=======
+Bandpass = [0.2 0.4];
+Z4 = Y;
+
+
+Z4 = fftshift(Z4);
+for x = 1:size(Z4,1)
+    for y = 1:size(Z4,2)
+        if ((x-400)^2 + (y-640)^2)^0.5 > Bandpass(1)*size(Z4,1) && ((x-400)^2 + (y-640)^2)^0.5 < Bandpass(2)*size(Z4,1)
+            Z4(x,y) = 0;
+        end
+    end
+end
+X4 = ifftshift(Z4);
+X4 = ifft2(X4);
+X4 = abs(X4);
+Z4 = log(abs(Z4)+1);
+Z4 = mat2gray(Z4);
+Z4= abs(Z4);
+figure
+imshow(Z4)
+>>>>>>> 434fae1769eb63cb98a6efbe93ecbaced55e496b
 
 
 
 
+<<<<<<< HEAD
 %plotting figures
 
 figure
@@ -103,6 +141,18 @@ subplot(2,2,4)
 imagesc(X4)
 title('Band pass filter')
 
+=======
+figure 
+colormap('gray')
+subplot(2,2,1)
+imagesc(X)
+subplot(2,2,2)
+imagesc(X2)
+subplot(2,2,3)
+imagesc(X3)
+subplot(2,2,4)
+imagesc(X4)
+>>>>>>> 434fae1769eb63cb98a6efbe93ecbaced55e496b
 
 figure
 colormap('gray');
