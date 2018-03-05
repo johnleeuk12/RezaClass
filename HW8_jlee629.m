@@ -2,18 +2,18 @@ function HW8_jlee629()
 
 
 %% part 1 Fourier Domain filtering
-X = imread('Paris','jpg');
+X = imread('Nice','jpg');
 X = rgb2gray(X);
 figure
 imagesc(X)
 colormap('gray');
 
-Y = fft2(X);
-Z1 = fftshift(Y);
-X1 = ifft2(Y);
-figure
-colormap('gray');
-imagesc(X1);
+% Y = fft2(X);
+% Z1 = fftshift(Y);
+% X1 = ifft2(Y);
+% figure
+% colormap('gray');
+% imagesc(X1);
 
 Z1 = abs(Z1);
 Z1 = log(Z1+1);
@@ -35,9 +35,6 @@ Z2 = abs(Z2);
 figure
 imshow(Z2)
 
-figure
-colormap('gray');
-imagesc(X2)
 
 Highpass = 0.9;
 Z3 = Y;
@@ -55,15 +52,41 @@ Z3 = abs(Z3);
 figure
 imshow(Z3)
 
+
+Bandpass = [0.2 0.4];
+Z4 = Y;
+
+
+Z4 = fftshift(Z4);
+for x = 1:size(Z4,1)
+    for y = 1:size(Z4,2)
+        if ((x-400)^2 + (y-640)^2)^0.5 > Bandpass(1)*size(Z4,1) && ((x-400)^2 + (y-640)^2)^0.5 < Bandpass(2)*size(Z4,1)
+            Z4(x,y) = 0;
+        end
+    end
+end
+X4 = ifftshift(Z4);
+X4 = ifft2(X4);
+X4 = abs(X4);
+Z4 = log(abs(Z4)+1);
+Z4 = mat2gray(Z4);
+Z4= abs(Z4);
+figure
+imshow(Z4)
+
+
+
+
 figure 
 colormap('gray')
-subplot(1,3,1)
+subplot(2,2,1)
 imagesc(X)
-subplot(1,3,2)
+subplot(2,2,2)
 imagesc(X2)
-subplot(1,3,3)
+subplot(2,2,3)
 imagesc(X3)
-
+subplot(2,2,4)
+imagesc(X4)
 
 
 %% part 2 Real and Imaginary parts of the DFT. 
