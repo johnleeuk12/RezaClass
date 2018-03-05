@@ -101,17 +101,15 @@ X2 = rgb2gray(X2);
 Y1 = fft2(X1);
 Y2 = fft2(X2);
 
-Z.Y1real = real(Y1);
-Z.Y1imag = imag(Y1);
-Z.Y2real = real(Y2);
-Z.Y2imag = imag(Y2);
+Z.Y1mag = abs(fftshift(Y1));
+Z.Y1phase = angle(fftshift(Y1));
+Z.Y2mag = abs(fftshift(Y2));
+Z.Y2phase = angle(fftshift(Y2));
 
 
-Y1 = log(abs(fftshift(Y1))+1);
-Y2 = log(abs(fftshift(Y2))+1);
 
-Mod1 = complex(Z.Y1real, Z.Y2imag);
-Mod2 = complex(Z.Y2real, Z.Y1imag);
+Mod1 = Z.Y1mag.*exp(1i*Z.Y2phase) ;
+Mod2 = Z.Y2mag.*exp(1i*Z.Y1phase) ;
 XMod1 = abs(ifft2(Mod1));
 XMod2 = abs(ifft2(Mod2));
 fourier1 = log(abs(fftshift(Mod1))+1);
@@ -119,25 +117,36 @@ fourier2 = log(abs(fftshift(Mod2))+1);
 
 figure
 subplot(2,2,1)
-imshow(abs(mat2gray(log(abs(fftshift(Z.Y1real))+1))))
+imshow(abs(mat2gray(log(abs(Z.Y1mag+1)))))
+title('Magnitude(Forest)')
 subplot(2,2,2)
-imshow(abs(mat2gray(log(abs(fftshift(Z.Y1imag))+1))))
+imshow(abs(mat2gray(log(abs(Z.Y2mag+1)))))
+title('Magnitude(Room)')
 subplot(2,2,3)
-imshow(abs(mat2gray(log(abs(fftshift(Z.Y2real))+1))))
+imshow(abs(mat2gray(log(abs(Z.Y1phase+1)))))
+title('Phase(Forest)')
 subplot(2,2,4)
-imshow(abs(mat2gray(log(abs(fftshift(Z.Y1imag))+1))))
+imshow(abs(mat2gray(log(abs(Z.Y2phase+1)))))
+title('Phase(Room)')
 
 
 figure
 colormap('gray')
 subplot(2,2,1)
+
 imagesc(X1)
+title('Forest')
 subplot(2,2,2)
+
 imagesc(X2)
+title('Room')
 subplot(2,2,3)
+
 imagesc(XMod1)
+title('Magnitude(Forest)+Phase(Room)')
 subplot(2,2,4)
 imagesc(XMod2)
+title('Magnitude(Room)+Phase(Forest)')
 
 
 
