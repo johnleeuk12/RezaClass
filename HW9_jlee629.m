@@ -47,22 +47,31 @@ for n = 2:N
     else
         p = 4;
     end
-    X(:,n) = x(:,n); %A{p}*X(:,n-1) + normrnd(zeros(2,1),sqrt([epsX{p}(1,1); epsX{p}(2,2)])); %real X(n)
-%     K{n} = P{n-1}*H.'/(H*P{n-1}*H.' +H*([epsS{p}(1,1) 0; 0 0]*X(:,n)*X(:,n).'*[epsS{p}(1,1) 0; 0 0].' + ... % calculating the Kalman gain with estimate of X
-%         [0 0; 0 epsS{p}(2,2)]*X(:,n)*X(:,n).'*[0 0; 0 epsS{p}(2,2)].')*H.' + epsY{p}); 
+    X(:,n) = x(:,n);
+    LMS{n} = X(:,n)/(X(:,n).'*X(:,n));
     K{n} = P{n-1}*H.'/(H*P{n-1}*H.' +H*(sqrt(X*X.').*epsS{p})*H.' + epsY{p}); 
     Ptemp = (eye(2) - K{n}*H)*P{n-1};
     Xhat(:,n) =(eye(2)- K{n}*H)*Xhat(:,n-1) + K{n}*(H*X(:,n)+ H*normrnd(zeros(2,1),sqrt(abs(X(:,n)).*[epsX{p}(1,1); epsX{p}(2,2)])) + normrnd(zeros(1,1), sqrt(epsY{p})));
     P{n} = A{p}*Ptemp*A{p}.' + epsX{p};
-    Yhat(n) = H*(Xhat(:,n));% + normrnd(zeros(2,1),sqrt(abs(X(:,n)).*[epsX{p}(1,1); epsX{p}(2,2)]))) + normrnd(zeros(1,1), sqrt(epsY{p}));
-%     Yhat(n) = H*(Xhat(:,n) + normrnd(zeros(2,1),sqrt(abs(Xhat(:,n)).*[epsX{p}(1,1); epsX{p}(2,2)]))) + normrnd(zeros(1,1), sqrt(epsY{p}));
+    Yhat(n) = H*(Xhat(:,n));
 end
 
 figure
 plot(Yhat)
 hold on 
 plot(y)
-test = 1;
+
+figure
+plot(y-Yhat)
+
+figure
+
+test = zeros(1,N);
+for n = 2:N
+    test(n) = sqrt((LMS{n}(1,1)-K{n}(1,1))^2 + (LMS{n}(2,1)-K{n}(2,1))^2);
+end
+plot(test)
+
 
 
 
