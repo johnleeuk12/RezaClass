@@ -27,6 +27,8 @@ epsY{4} = 1.;
 
 N = length(y); 
 H = [1 1];
+
+%% initializing the system
 X = zeros(2,N);
 Xhat = zeros(2,N);
 Yhat = zeros(1,N);
@@ -35,8 +37,10 @@ X(:,1) = A{1}*[0;1] + normrnd(zeros(2,1),sqrt([epsX{p}(1,1); epsX{p}(2,2)])); % 
 Xhat(:,1) = [0;1];
 Yhat(1) = H*(Xhat(:,1) + normrnd(zeros(2,1),sqrt([epsX{p}(1,1); epsX{p}(2,2)]))) + normrnd(zeros(1,1), sqrt(epsY{p}));
 P{1} = [1 0; 0 1];
-K = {};
-
+% K = {};
+K(:,1) = [0;0];
+LMS(:,1) = [0;0];
+%% computing the Kalman gain for different states. 
 for n = 2:N
     if n<201
         p = 1;
@@ -48,30 +52,53 @@ for n = 2:N
         p = 4;
     end
     X(:,n) = x(:,n);
-    LMS{n} = X(:,n)/(X(:,n).'*X(:,n));
-    K{n} = P{n-1}*H.'/(H*P{n-1}*H.' +H*(sqrt(X*X.').*epsS{p})*H.' + epsY{p}); 
-    Ptemp = (eye(2) - K{n}*H)*P{n-1};
-    Xhat(:,n) =(eye(2)- K{n}*H)*Xhat(:,n-1) + K{n}*(H*X(:,n)+ H*normrnd(zeros(2,1),sqrt(abs(X(:,n)).*[epsX{p}(1,1); epsX{p}(2,2)])) + normrnd(zeros(1,1), sqrt(epsY{p})));
+%     LMS(:,n) = X(:,n)/(X(:,n).'*X(:,n)); %computing LMS
+    K(:,n) = P{n-1}*H.'/(H*P{n-1}*H.' +H*(sqrt(X*X.').*epsS{p})*H.' + epsY{p}); %computing Kalman gain 
+    Ptemp = (eye(2) - K(:,n)*H)*P{n-1};
+    Xhat(:,n) =(eye(2)- K(:,n)*H)*Xhat(:,n-1) + K(:,n)*(H*X(:,n)+ H*normrnd(zeros(2,1),sqrt(abs(X(:,n)).*[epsX{p}(1,1); epsX{p}(2,2)])) + normrnd(zeros(1,1), sqrt(epsY{p})));
     P{n} = A{p}*Ptemp*A{p}.' + epsX{p};
     Yhat(n) = H*(Xhat(:,n));
 end
 
+
+%% figures
+
 figure
+plot(K(1,:))
+title('Kalman Filter')
+xlabel('iterations')
+% hold on 
+% plot(LMS(1,:))
+figure
+title('Estimate of X')
+plot(Xhat(1,:))
+hold on 
+plot(Xhat(2,:))
+xlabel('iterations')
+
+
+
+figure
+title('comparison between y and Yhat')
 plot(Yhat)
 hold on 
 plot(y)
-
-figure
-plot(y-Yhat)
-
-figure
-
-test = zeros(1,N);
-for n = 2:N
-    test(n) = sqrt((LMS{n}(1,1)-K{n}(1,1))^2 + (LMS{n}(2,1)-K{n}(2,1))^2);
-end
-plot(test)
+xlabel('iterations')
+legend('Yhat','Y')
 
 
-
-
+% 
+% figure
+% plot(y-Yhat)
+% 
+% figure
+% 
+% test = zeros(1,N);
+% for n = 2:N
+%     test(n) = sqrt((LMS(1,n)-K(1,n))^2 + (LMS(2,n)-K(2,n))^2);
+% end
+% plot(test)
+% 
+% 
+% 
+% 
