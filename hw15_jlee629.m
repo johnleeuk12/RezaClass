@@ -1,20 +1,22 @@
 function hw15_jlee629()
 clear all
 
-
+% load and initialize parameters
 Data = load('classification_IRLS.dat');
 N = length(Data); 
 X = [ones(N,1) Data(:,2) Data(:,3)];
-
 w = [0 0 0];
 
+% update q the estimate of the class for each data point
 Q = zeros(N,N);
 for it = 1:10
     for n = 1:N
         q(n) = 1/(1+exp(-w(it,:)*X(n,:).'));
         Q(n,n) = q(n)*(1-q(n));
     end
+    %updating the weight vector w 
     w(it+1,:) = w(it,:)+ (inv(X.'*Q*X)*X.'*(Data(:,1)-q.')).';
+    %calculating mean squared error for each iteration
     err(it) = immse(Data(:,1),q.');
 end
 
