@@ -1,6 +1,6 @@
 function hw19_jlee629()
 
-%Parameters
+%% Parameters
 N = 64;
 X = [];
 for n = 1:N
@@ -9,11 +9,14 @@ for n = 1:N
 end
 D = length(X);
 
+%% apply PCA
+d = 2;
+[mu,Ud,Y] = pcaJL(X,d);
+img_average = reshape(mu,[192,168]);
+eface1 = 
 
-
-
-
-function [mu,Ud, Y] = pcaJL(X,d)
+%% PCA function
+function [mu,Ud,Y] = pcaJL(X,d)
 
 mu = mean(X,2);
 centerX = X-mu;
