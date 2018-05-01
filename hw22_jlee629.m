@@ -11,22 +11,26 @@ Z = {};
 f_ga = [1:2:360]/180*pi;
 u_opt = zeros(length(f_ga),8);
 f_g = [cos(f_ga);sin(f_ga)];
+A = eye(8)*-1;
+B = zeros(8,1);
+%% optimization of parameter u
 for n = 1:length(f_ga)
     u0 = rand(1,8);
     J = @(u)(f_g(:,n)-P*u.').'*(f_g(:,n)-P*u.') + lambda*sum(u.^m); % cost function
-    u_opt(n,:) = fmincon(J,u0,[],[]); %calculating optimal force u
-
+    u_opt(n,:) = fmincon(J,u0,A,B); %calculating optimal force u
+    disp(n)
 end
 
+%% projecting u on f_g
 for n = 1:length(f_ga)
-        Z.x(n,:) = u_opt(n,:)*f_g(1,n);
+    Z.x(n,:) = u_opt(n,:)*f_g(1,n);
     Z.y(n,:) = u_opt(n,:)*f_g(2,n);
 end
 
 
 figure
-for t = 1
-    scatter(Z.x(:,t),Z.y(:,t))
+for t = 1:8
+    scatter(Z.x(:,t),Z.y(:,t),10,'filled')
     hold on
 end
 plotv(P,'-')
