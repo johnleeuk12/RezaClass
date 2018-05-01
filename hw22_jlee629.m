@@ -6,7 +6,7 @@ Pa = [9 49 100 145 190 230 270 340]; % deg
 Pa = Pa/180*pi;
 P = [cos(Pa); sin(Pa)];
 lambda = 0.5;
-m = 1.1;
+m = 2;
 Z = {};
 f_ga = [1:2:360]/180*pi;
 u_opt = zeros(length(f_ga),8);
@@ -29,9 +29,11 @@ end
 
 
 figure
-for t = 1:8
+    scatter(Z.x(:,8),Z.y(:,8),10,'filled')
+    hold on
+for t = 1:7
     scatter(Z.x(:,t),Z.y(:,t),10,'filled')
     hold on
 end
 plotv(P,'-')
-
+plot(f_g(1,:),f_g(2,:))

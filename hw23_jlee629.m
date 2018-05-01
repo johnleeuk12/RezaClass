@@ -9,7 +9,7 @@ s = [1;0;0];
 
 p = 120;
 k = 50;
-kappa = 0.0005;
+kappa = 0.00006;
 
 g = pi/5;
 x0 = [0;0;0];
@@ -43,14 +43,15 @@ Z4 = zeros(k,k);
 
 Z = [Z1 Z2;Z3 Z4];
 
-c=1e-13;
-Z = Z+c*eye(length(Z));
+%% computing optimal motor commmand U
+c=1e-13; %regularization factor.
+Z = Z+c*eye(length(Z)); %Regularizing Z to make it inversible
 
 Y = zeros(1,p+k-1);
 Y1 = zeros(1,k);
 
 for i = 1:k
-    Y1(1,i) = g-s.'*(A^(p+i))*x0;
+    Y1(1,i) = g-s.'*(A^(p+i))*x0; 
 end
 
 % for z1 = 1:219    
@@ -64,45 +65,31 @@ Y = [Y Y1].';
 
 U = inv(Z)*Y;
 U = [0; U];
-X = zeros(3,p);
+X = zeros(3,p+k);
+%% Computing the trajectory X 
 noise = randn(length(U),1)*kappa^2;
 
-for t = 1:p-1
+for t = 1:p+k-1
     X(:,t+1) = A*X(:,t)+b*(U(t)+noise(t)*U(t)^2);
 end
 
-
-subplot(1,2,1)
-plot(X(1,:))
+subplot(2,2,1)
+plot(U(1:p+k),'Linewidth',2);
 hold on
-subplot(1,2,2)
-plot(X(2,:))
+subplot(2,2,3)
+plot(X(1,:),'Linewidth',2,'DisplayName','\kappa')
+title('motor commands')
+xlabel('steps')
+hold on
+subplot(2,2,3)
+plot([1 p+k],[g g]);
+hold on
+title('Position')
+xlabel('steps')
+subplot(2,2,4)
+plot(X(2,:),'Linewidth',2)
+title('Velocity ')
+xlabel('steps')
 hold on
 
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
