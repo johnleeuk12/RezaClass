@@ -40,7 +40,7 @@ pSteps = p / Delta;
 
 % The initial state vector
 x0 = [0;0;0;0;0;0;goal]; 
-
+    
 % Specify the value of the T matrix. Note that T has this value only after
 % k1 time has elapsed. It is zero before.
 T =  [10^5,0; 0,300];
@@ -58,15 +58,15 @@ numAverage = 50;
 
 %% Case 1: No Signal Dependent Noise, No Hold
 % Uncertainty Matrices
-C1 = [0,0; 0,0];
-C2 = [0,0;0,0];
-
-% The length of the holding period
-Thold = 0;
-
-% Perform the simulations and plot the results
-mainProjectFunction(x0, A,B, pSteps, k1Steps, T, Thold, numAverage, ...
-    Qx, Qy, H, C1, C2, L, Delta, goal, 1, 2)
+% C1 = [0,0; 0,0];
+% C2 = [0,0;0,0];
+% 
+% % The length of the holding period
+% Thold = 0;
+% 
+% % Perform the simulations and plot the results
+% mainProjectFunction(x0, A,B, pSteps, k1Steps, T, Thold, numAverage, ...
+%     Qx, Qy, H, C1, C2, L, Delta, goal, 1, 2)
 
 %% Case 2: Small Signal Dependent Noise, No Hold
 % Uncertainty Matrices
