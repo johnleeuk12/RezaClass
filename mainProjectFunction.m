@@ -66,10 +66,15 @@ plot(timebin,eye_mean,'LineWidth',2,'DisplayName','eye');
 hold on
 plot(timebin,head_mean,'LineWidth',2,'DisplayName','head');
 plot(timebin,eye_mean+head_mean,'LineWidth',2,'DisplayName','gaze');
+plot(timebin,40*ones(1,length(timebin)),'--k','LineWidth',2)
+
 legend('show')
 xlabel('time (s)')
 ylabel('position (deg)')
 title(['Figure n. ' num2str(ind2) ' simulation average']) 
+grid('on')
+
+
 hold off
 
 figure
@@ -77,10 +82,13 @@ plot(timebin,eye_posi(1,:),'LineWidth',2,'DisplayName','eye');
 hold on
 plot(timebin,head_posi(1,:),'LineWidth',2,'DisplayName','head');
 plot(timebin,eye_posi(1,:)+head_posi(1,:),'LineWidth',2,'DisplayName','gaze');
+plot(timebin,40*ones(1,length(timebin)),'--k','LineWidth',2)
+
 legend('show')
 xlabel('time (s)')
 ylabel('position (deg)')
 title(['Figure n. ' num2str(ind1) ' single simulation']) 
+grid('on')
 hold off
 test = 1;
 function Kalman = calculateKalmanGains(x0,G,pSteps, k1Steps,Qx, Qy, H, C1, C2,A,B)
