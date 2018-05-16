@@ -56,8 +56,8 @@ numAverage = 50;
 [A, B] = makeAandB(tau1eye, tau2eye, alpha1eye, tau1head,tau2head, alpha1head , Delta);
 
 
-%% Case 1: No Signal Dependent Noise, No Hold
-% Uncertainty Matrices
+% %% Case 1: No Signal Dependent Noise, No Hold
+% % Uncertainty Matrices
 % C1 = [0,0; 0,0];
 % C2 = [0,0;0,0];
 % 
@@ -68,30 +68,30 @@ numAverage = 50;
 % mainProjectFunction(x0, A,B, pSteps, k1Steps, T, Thold, numAverage, ...
 %     Qx, Qy, H, C1, C2, L, Delta, goal, 1, 2)
 
-%% Case 2: Small Signal Dependent Noise, No Hold
-% Uncertainty Matrices
-C1 = [0.01,0; 0,0];
-C2 = [0,0;0,0.01];
-
-% The length of the holding period
-Thold = 0;
-
-% Perform the simulations and plot the results
-mainProjectFunction(x0, A,B, pSteps, k1Steps, T, Thold, numAverage, ...
-    Qx, Qy, H, C1, C2, L, Delta, goal, 3, 4)
-
-%% Case 3: Large Signal Dependent Noise, No Hold
-% Uncertainty Matrices
-C1 = [2.00,0; 0,0];
-C2 = [0,0;0,2.00];
-
-% The length of the holding period
-Thold = 0;
-
-% Perform the simulations and plot the results
-mainProjectFunction(x0, A,B, pSteps, k1Steps, T, Thold, numAverage, ...
-    Qx, Qy, H, C1, C2, L, Delta, goal, 5, 6)
-
+% %% Case 2: Small Signal Dependent Noise, No Hold
+% % Uncertainty Matrices
+% C1 = [0.01,0; 0,0];
+% C2 = [0,0;0,0.01];
+% 
+% % The length of the holding period
+% Thold = 0;
+% 
+% % Perform the simulations and plot the results
+% mainProjectFunction(x0, A,B, pSteps, k1Steps, T, Thold, numAverage, ...
+%     Qx, Qy, H, C1, C2, L, Delta, goal, 3, 4)
+% 
+% %% Case 3: Large Signal Dependent Noise, No Hold
+% % Uncertainty Matrices
+% C1 = [2.00,0; 0,0];
+% C2 = [0,0;0,2.00];
+% 
+% % The length of the holding period
+% Thold = 0;
+%  
+% % Perform the simulations and plot the results
+% mainProjectFunction(x0, A,B, pSteps, k1Steps, T, Thold, numAverage, ...
+%     Qx, Qy, H, C1, C2, L, Delta, goal, 5, 6)
+% 
 %% Case 4: Small Signal Dependent Noise, Short Head Hold
 % Uncertainty Matrices
 C1 = [0.01,0; 0,0];
