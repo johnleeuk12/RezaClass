@@ -91,6 +91,8 @@ title(['Figure n. ' num2str(ind1) ' single simulation'])
 grid('on')
 hold off
 test = 1;
+
+%% Kalman gain 
 function Kalman = calculateKalmanGains(x0,G,pSteps, k1Steps,Qx, Qy, H, C1, C2,A,B)
 
 % compute Kalman gain with given initial position x0 and Feedback Gain G
@@ -114,7 +116,7 @@ end
 
 Kalman{pSteps} = S_e{pSteps}*H.'/(H*S_e{pSteps}*H.'+Qy);
 
-
+%% optimal feedback Gain
 function G = calculateFeedbackGains(Kalman,pSteps, k1Steps,Qx, Qy, H, C1, C2,A,B,Ts,L)
 %compute the feedback gain with position x and the Kalman filter Kalman
 
